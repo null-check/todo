@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/tasksFragment"
-        android:name="com.arjun.todo.views.tasks.TasksFragment"
+        android:name="com.arjun.todo.views.tasks.FragmentTasks"
         android:label="fragment_tasks"
         tools:layout="@layout/fragment_tasks">
         <action
