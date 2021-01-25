@@ -85,6 +85,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
                 true
             }
             R.id.action_delete_completed -> {
+                viewModel.deleteChecked()
                 true
             }
             else -> super.onOptionsItemSelected(item)
