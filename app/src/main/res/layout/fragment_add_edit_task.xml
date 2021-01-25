@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.tasks.AddEditTaskFragment">
+    tools:context=".views.addedittask.FragmentAddEditTask">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
 
         <EditText
             android:id="@+id/et_task_name"
-            android:hint="Task name"
+            android:hint="@string/task_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"/>
@@ -31,5 +31,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_check_24"
         android:layout_margin="16dp"
-        android:layout_gravity="bottom|right"/>
+        android:layout_gravity="bottom|right"
+        android:contentDescription="@string/save_task" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

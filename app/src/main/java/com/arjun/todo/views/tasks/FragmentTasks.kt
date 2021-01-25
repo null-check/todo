@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.arjun.todo.R
 import com.arjun.todo.data.SortOrder
 import com.arjun.todo.data.Task
 import com.arjun.todo.databinding.FragmentTasksBinding
+import com.arjun.todo.util.exhaustive
 import com.arjun.todo.util.onQueryTextChanged
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,6 +66,10 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
                     }
 
                 }).attachToRecyclerView(recyclerViewTasks)
+
+                fabAddTask.setOnClickListener {
+                    viewModel.onAddNewTaskClicked()
+                }
             }
         }
 
@@ -78,7 +84,15 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
                                 viewModel.onUndoDeleteClick(event.task)
                             }.show()
                     }
-                }
+                    is ViewModelTasks.TasksEvent.NavigateToAddTaskScreen -> {
+                        val action = FragmentTasksDirections.actionTasksFragmentToAddEditTaskFragment(null, "New Task")
+                        findNavController().navigate(action)
+                    }
+                    is ViewModelTasks.TasksEvent.NavigateToEditTaskScreen -> {
+                        val action = FragmentTasksDirections.actionTasksFragmentToAddEditTaskFragment(event.task, "Edit Task")
+                        findNavController().navigate(action)
+                    }
+                }.exhaustive
             }
         }
         setHasOptionsMenu(true)
