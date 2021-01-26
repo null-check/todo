@@ -1,6 +1,7 @@
 package com.arjun.todo.views.tasks
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -26,10 +27,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+private const val TAG = "FragmentTasks"
+
 @AndroidEntryPoint
 class FragmentTasks : Fragment(R.layout.fragment_tasks) {
 
     private val viewModel: ViewModelTasks by viewModels()
+
+    private lateinit var searchView: SearchView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -116,10 +121,21 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
         inflater.inflate(R.menu.menu_fragment_tasks, menu)
 
         val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
+        searchView = searchItem.actionView as SearchView
+
+        val pendingQuery = viewModel.searchQueryFlow.value
+        if (pendingQuery!!.isNotEmpty()) {
+            searchItem.expandActionView()
+            searchView.setQuery(pendingQuery, false)
+        }
 
         searchView.onQueryTextChanged {
             viewModel.searchQueryFlow.value = it
+        }
+        searchView.setOnQueryTextFocusChangeListener { view, hasFocus ->
+            if (viewModel.searchQueryFlow.value.isNullOrEmpty()) {
+                searchItem.collapseActionView()
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -149,5 +165,10 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        searchView.setOnQueryTextListener(null) // To fix bug where it sends empty string on destroy
     }
 }
