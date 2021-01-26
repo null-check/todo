@@ -1,5 +1,6 @@
 package com.arjun.todo.views
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -46,3 +47,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 }
+
+const val ADD_TASK_RESULT_OK = Activity.RESULT_FIRST_USER
+const val EDIT_TASK_RESULT_OK = Activity.RESULT_FIRST_USER + 1

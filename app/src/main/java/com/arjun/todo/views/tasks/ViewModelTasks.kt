@@ -7,6 +7,8 @@ import com.arjun.todo.data.PreferencesManager
 import com.arjun.todo.data.SortOrder
 import com.arjun.todo.data.Task
 import com.arjun.todo.data.TaskDao
+import com.arjun.todo.views.ADD_TASK_RESULT_OK
+import com.arjun.todo.views.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -69,9 +71,21 @@ class ViewModelTasks @ViewModelInject constructor(
         tasksEventChannel.send(TasksEvent.NavigateToAddTaskScreen)
     }
 
+    fun onAddEditResult(result: Int) {
+        when (result) {
+            ADD_TASK_RESULT_OK -> showTaskSavedConfirmationMessage("Task added")
+            EDIT_TASK_RESULT_OK -> showTaskSavedConfirmationMessage("Task updated")
+        }
+    }
+
+    private fun showTaskSavedConfirmationMessage(message: String) = viewModelScope.launch {
+        tasksEventChannel.send(TasksEvent.ShowTaskSavedMessage(message))
+    }
+
     sealed class TasksEvent {
         object NavigateToAddTaskScreen : TasksEvent()
         data class NavigateToEditTaskScreen(val task: Task) : TasksEvent()
         data class ShowUndoDeleteTaskMessage(val task: Task) : TasksEvent()
+        data class ShowTaskSavedMessage(val message: String) : TasksEvent()
     }
 }
