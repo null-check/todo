@@ -54,10 +54,6 @@ class ViewModelTasks @ViewModelInject constructor(
         taskDao.update(task.copy(completed = checked))
     }
 
-    fun deleteCompleted() = viewModelScope.launch {
-        taskDao.deleteCompleted()
-    }
-
     fun onTaskSwiped(task: Task) = viewModelScope.launch {
         taskDao.delete(task)
         tasksEventChannel.send(TasksEvent.ShowUndoDeleteTaskMessage(task))
@@ -82,10 +78,15 @@ class ViewModelTasks @ViewModelInject constructor(
         tasksEventChannel.send(TasksEvent.ShowTaskSavedMessage(message))
     }
 
+    fun onDeleteCompletedClicked() = viewModelScope.launch {
+        tasksEventChannel.send(TasksEvent.NavigateToDeleteCompletedScreen)
+    }
+
     sealed class TasksEvent {
         object NavigateToAddTaskScreen : TasksEvent()
         data class NavigateToEditTaskScreen(val task: Task) : TasksEvent()
         data class ShowUndoDeleteTaskMessage(val task: Task) : TasksEvent()
         data class ShowTaskSavedMessage(val message: String) : TasksEvent()
+        object NavigateToDeleteCompletedScreen : TasksEvent()
     }
 }

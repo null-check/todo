@@ -29,4 +29,11 @@
             android:name="title"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/deleteCompletedDialogFragment"
+        android:name="com.arjun.todo.views.deletecompleted.DialogFragmentDeleteCompleted"
+        android:label="DeleteCompletedDialogFragment" />
+    <action
+        android:id="@+id/action_global_deleteCompletedDialogFragment"
+        app:destination="@id/deleteCompletedDialogFragment" />
 </navigation>
