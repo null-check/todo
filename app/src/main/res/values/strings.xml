@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Todo</string>
+    <string name="app_name">Weekly Tracker</string>
     <string name="settings">Settings</string>
 
     <!-- Action bar -->
@@ -16,4 +16,12 @@
     <!-- Add edit task -->
     <string name="task_name">Task name</string>
     <string name="save_task">Save task</string>
+    <string name="title_activity_bottom_nav">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- Targets list -->
+    <string name="add_target">Add target</string>
+    <string name="target_progress_text">%s out of %s hours spent</string>
 </resources>

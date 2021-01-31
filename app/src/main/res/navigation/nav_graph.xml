@@ -3,13 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/tasksFragment">
+    app:startDestination="@id/fragmentTargets">
 
     <fragment
         android:id="@+id/tasksFragment"
         android:name="com.arjun.todo.views.tasks.FragmentTasks"
         android:label="Tasks"
         tools:layout="@layout/fragment_tasks">
+        <argument
+            android:name="target"
+            android:defaultValue="@null"
+            app:argType="com.arjun.todo.data.Target"
+            app:nullable="true" />
         <action
             android:id="@+id/action_tasksFragment_to_addEditTaskFragment"
             app:destination="@id/addEditTaskFragment" />
@@ -36,4 +41,14 @@
     <action
         android:id="@+id/action_global_deleteCompletedDialogFragment"
         app:destination="@id/deleteCompletedDialogFragment" />
+
+    <fragment
+        android:id="@+id/fragmentTargets"
+        android:name="com.arjun.todo.views.targets.FragmentTargets"
+        android:label="Targets"
+        tools:layout="@layout/fragment_targets" >
+        <action
+            android:id="@+id/action_fragmentTargets_to_tasksFragment"
+            app:destination="@id/tasksFragment" />
+    </fragment>
 </navigation>

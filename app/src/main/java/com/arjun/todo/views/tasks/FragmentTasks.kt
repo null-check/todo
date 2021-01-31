@@ -1,17 +1,18 @@
 package com.arjun.todo.views.tasks
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,9 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
             }
         })
 
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!)
+
         val binding = FragmentTasksBinding.bind(view)
 
         binding.apply {
@@ -56,6 +60,7 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
                 adapter = adapterTasks
                 layoutManager = LinearLayoutManager(requireContext())
 //                setHasFixedSize(true)
+                addItemDecoration(dividerItemDecoration)
 
                 ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
                     override fun onMove(
@@ -72,10 +77,10 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
                     }
 
                 }).attachToRecyclerView(recyclerViewTasks)
+            }
 
-                fabAddTask.setOnClickListener {
-                    viewModel.onAddNewTaskClicked()
-                }
+            fabAddTask.setOnClickListener {
+                viewModel.onAddNewTaskClicked()
             }
         }
 

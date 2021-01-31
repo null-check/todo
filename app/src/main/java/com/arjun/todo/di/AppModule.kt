@@ -2,8 +2,9 @@ package com.arjun.todo.di
 
 import android.app.Application
 import androidx.room.Room
+import com.arjun.todo.data.TargetDao
 import com.arjun.todo.data.TaskDao
-import com.arjun.todo.data.TaskDatabase
+import com.arjun.todo.data.TodoDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,14 +22,17 @@ object AppModule {
     @Singleton
     fun provideDatabase(
         app: Application,
-        callback: TaskDatabase.Callback
-    ): TaskDatabase = Room.databaseBuilder(app, TaskDatabase::class.java, "task_database")
+        callback: TodoDatabase.Callback
+    ): TodoDatabase = Room.databaseBuilder(app, TodoDatabase::class.java, "todo_database")
         .fallbackToDestructiveMigration()
         .addCallback(callback)
         .build()
 
     @Provides
-    fun provideTaskDao(db: TaskDatabase): TaskDao = db.taskDao()
+    fun provideTaskDao(db: TodoDatabase): TaskDao = db.taskDao()
+
+    @Provides
+    fun provideTargetDao(db: TodoDatabase): TargetDao = db.targetDao()
 
     @ApplicationScope
     @Provides
