@@ -20,4 +20,5 @@
     <color name="grey">#999999</color>
     <color name="mercury">#CCCCCC</color>
     <color name="silver">#EEEEEE</color>
+    <color name="almost_white">#F8F8F8</color>
 </resources>

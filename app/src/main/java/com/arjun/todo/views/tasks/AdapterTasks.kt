@@ -2,9 +2,11 @@ package com.arjun.todo.views.tasks
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.arjun.todo.R
 import com.arjun.todo.data.Task
 import com.arjun.todo.databinding.ItemTaskBinding
 
@@ -46,6 +48,7 @@ class AdapterTasks(private val taskClickListener: OnItemClickListener) :
                 checkbox.isChecked = task.completed
                 tvName.text = task.name
                 tvName.paint.isStrikeThruText = task.completed
+                root.background = ContextCompat.getDrawable(itemView.context, if (task.completed) R.color.almost_white else R.color.white)
             }
         }
     }
