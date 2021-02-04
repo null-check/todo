@@ -34,8 +34,9 @@ abstract class TodoDatabase : RoomDatabase() {
                 taskDao.insert(Task("CWosh the dishies4"))
                 taskDao.insert(Task("BWosh the dishies5"))
 
-                targetDao.insert(Target("Work", 8, 0))
-                targetDao.insert(Target("Learn", 4, 1))
+                targetDao.insert(Target("Work", 8*60, 0))
+                targetDao.insert(Target("Learn", 4*60, 1*60))
+                targetDao.insert(Target("Learn", 30, 10))
             }
         }
     }

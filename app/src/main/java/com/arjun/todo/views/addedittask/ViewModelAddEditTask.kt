@@ -10,7 +10,6 @@ import com.arjun.todo.data.TaskDao
 import com.arjun.todo.views.ADD_TASK_RESULT_OK
 import com.arjun.todo.views.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -26,6 +25,12 @@ class ViewModelAddEditTask @ViewModelInject constructor(
             state.set("taskName", value)
         }
 
+    var taskCompleted = state.get<Boolean>("taskCompleted") ?: task?.completed ?: false
+        set(value) {
+            field = value
+            state.set("taskCompleted", value)
+        }
+
     private val addEditTaskEventChannel = Channel<AddEditTaskEvent>()
     val addEditTaskEvent = addEditTaskEventChannel.receiveAsFlow()
 
@@ -36,9 +41,9 @@ class ViewModelAddEditTask @ViewModelInject constructor(
         }
 
         if (task != null) {
-            updateTask(task.copy(name = taskName))
+            updateTask(task.copy(name = taskName, completed = taskCompleted))
         } else {
-            createTask(Task(name = taskName))
+            createTask(Task(name = taskName, completed = taskCompleted))
         }
     }
 

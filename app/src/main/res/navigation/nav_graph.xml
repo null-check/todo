@@ -34,10 +34,12 @@
             android:name="title"
             app:argType="string" />
     </fragment>
+
     <dialog
         android:id="@+id/deleteCompletedDialogFragment"
         android:name="com.arjun.todo.views.deletecompleted.DialogFragmentDeleteCompleted"
         android:label="DeleteCompletedDialogFragment" />
+
     <action
         android:id="@+id/action_global_deleteCompletedDialogFragment"
         app:destination="@id/deleteCompletedDialogFragment" />
@@ -46,9 +48,46 @@
         android:id="@+id/fragmentTargets"
         android:name="com.arjun.todo.views.targets.FragmentTargets"
         android:label="Targets"
-        tools:layout="@layout/fragment_targets" >
+        tools:layout="@layout/fragment_targets">
         <action
             android:id="@+id/action_fragmentTargets_to_tasksFragment"
             app:destination="@id/tasksFragment" />
+        <action
+            android:id="@+id/action_fragmentTargets_to_fragmentAddEditTarget"
+            app:destination="@id/fragmentAddEditTarget" />
+        <action
+            android:id="@+id/action_fragmentTargets_to_fragmentTargetDetail"
+            app:destination="@id/fragmentTargetDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentAddEditTarget"
+        android:name="com.arjun.todo.views.addedittarget.FragmentAddEditTarget"
+        android:label="{title}"
+        tools:layout="@layout/fragment_add_edit_target">
+        <argument
+            android:name="target"
+            android:defaultValue="@null"
+            app:argType="com.arjun.todo.data.Target"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentTargetDetail"
+        android:name="com.arjun.todo.views.targetdetail.FragmentTargetDetail"
+        android:label="{title}"
+        tools:layout="@layout/fragment_target_detail">
+        <action
+            android:id="@+id/action_fragmentTargetDetail_to_fragmentAddEditTarget"
+            app:destination="@id/fragmentAddEditTarget" />
+        <argument
+            android:name="target"
+            app:argType="com.arjun.todo.data.Target" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 </navigation>

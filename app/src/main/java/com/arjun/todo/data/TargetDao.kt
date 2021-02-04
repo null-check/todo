@@ -26,4 +26,7 @@ interface TargetDao {
 
     @Delete
     suspend fun delete(task: Target)
+
+    @Query("SELECT * FROM target_table WHERE id = :targetId")
+    fun getTarget(targetId: Int): Flow<Target>
 }

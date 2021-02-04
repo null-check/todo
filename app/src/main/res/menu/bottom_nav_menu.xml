@@ -9,5 +9,5 @@
     <item
         android:id="@+id/tasksFragment"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Todo list" />
+        android:title="@string/todo_list" />
 </menu>

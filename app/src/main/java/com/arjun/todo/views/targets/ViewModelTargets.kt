@@ -4,6 +4,9 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.arjun.todo.data.*
+import com.arjun.todo.data.Target
+import com.arjun.todo.views.ADD_TARGET_RESULT_OK
+import com.arjun.todo.views.EDIT_TARGET_RESULT_OK
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -19,7 +22,7 @@ class ViewModelTargets @ViewModelInject constructor(
     val searchQueryFlow = state.getLiveData<String>("searchQuery", "")
     val preferencesFlow = preferencesManager.preferencesFlow
 
-    private val targetsEventChannel = Channel<ViewModelTargets.TargetsEvent>()
+    private val targetsEventChannel = Channel<TargetsEvent>()
     val targetsEvent = targetsEventChannel.receiveAsFlow()
 
     private val targetsFlow = combine(
@@ -33,12 +36,33 @@ class ViewModelTargets @ViewModelInject constructor(
 
     val targets = targetsFlow.asLiveData()
 
+    // Todo
     fun onSortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
         preferencesManager.updateSortOrder(sortOrder)
     }
 
+    fun onTargetSelected(target: Target) = viewModelScope.launch {
+        targetsEventChannel.send(TargetsEvent.NavigateToTargetDetailScreen(target))
+    }
+
+    fun onAddNewTargetClicked() = viewModelScope.launch {
+        targetsEventChannel.send(TargetsEvent.NavigateToAddTargetScreen)
+    }
+
+    fun onAddEditResult(result: Int) {
+        when (result) {
+            ADD_TARGET_RESULT_OK -> showTaskSavedConfirmationMessage("Task added")
+            EDIT_TARGET_RESULT_OK -> showTaskSavedConfirmationMessage("Task updated")
+        }
+    }
+
+    private fun showTaskSavedConfirmationMessage(message: String) = viewModelScope.launch {
+        targetsEventChannel.send(TargetsEvent.ShowTaskSavedMessage(message))
+    }
+
     sealed class TargetsEvent {
-//        object NavigateToAddTaskScreen : TasksEvent()
-//        data class NavigateToEditTaskScreen(val task: Task) : TasksEvent()
+        object NavigateToAddTargetScreen : TargetsEvent()
+        data class NavigateToTargetDetailScreen(val target: Target) : TargetsEvent()
+        data class ShowTaskSavedMessage(val message: String) : TargetsEvent()
     }
 }

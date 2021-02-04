@@ -31,6 +31,8 @@ class FragmentAddEditTask : Fragment(R.layout.fragment_add_edit_task) {
             etTaskName.setText(viewModel.taskName)
             tvDateCreated.isVisible = viewModel.task != null
             tvDateCreated.text = "Created: ${viewModel.task?.createdDateFormatted}"
+            checkboxCompleted.isChecked = viewModel.task?.completed ?: false
+            checkboxCompleted.jumpDrawablesToCurrentState()
 
             etTaskName.addTextChangedListener {
                 viewModel.taskName = it.toString()
@@ -38,6 +40,10 @@ class FragmentAddEditTask : Fragment(R.layout.fragment_add_edit_task) {
 
             fabSaveTask.setOnClickListener {
                 viewModel.onSaveClick()
+            }
+
+            checkboxCompleted.setOnClickListener {
+                viewModel.taskCompleted = checkboxCompleted.isChecked
             }
         }
 

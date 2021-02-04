@@ -3,12 +3,16 @@ package com.arjun.todo.views.targets
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.arjun.todo.R
 import com.arjun.todo.data.Target
 import com.arjun.todo.databinding.ItemTargetBinding
+import com.arjun.todo.util.getMinsFormatted
+import kotlin.math.max
 
 class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
     ListAdapter<Target, AdapterTargets.ViewHolderTarget>(DiffCallback()) {
@@ -38,8 +42,12 @@ class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
         fun bind(target: Target) {
             binding.apply {
                 tvName.text = target.name
-                tvTargetProgress.text = itemView.context.getString(R.string.target_progress_text, target.progress.toString(), target.weeklyTarget.toString())
-                (bgProgress.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = target.progress.toFloat() / target.weeklyTarget.toFloat()
+                tvProgressIndicator.isVisible = target.isInProgress
+                tvTargetAmount.text = itemView.context.getString(R.string.target_amount_text, getMinsFormatted(target.targetAmount))
+                tvTargetProgress.text = itemView.context.getString(R.string.target_progress_text, getMinsFormatted(target.currentProgress))
+                tvTargetRemaining.text = itemView.context.getString(R.string.target_remaining_text, getMinsFormatted(target.remainingAmount))
+                (bgProgress.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = target.progressPercent.toFloat() / 100
+                bgProgress.setBackgroundColor(ContextCompat.getColor(itemView.context, if (target.isDone) R.color.progress_green else R.color.baby_blue))
             }
         }
     }
