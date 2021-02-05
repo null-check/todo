@@ -60,6 +60,14 @@ class ViewModelTargets @ViewModelInject constructor(
         targetsEventChannel.send(TargetsEvent.ShowTaskSavedMessage(message))
     }
 
+    fun onTaskSwiped(target: Target) = viewModelScope.launch {
+        if (target.isInProgress) {
+            targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
+        } else {
+            targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
+        }
+    }
+
     sealed class TargetsEvent {
         object NavigateToAddTargetScreen : TargetsEvent()
         data class NavigateToTargetDetailScreen(val target: Target) : TargetsEvent()

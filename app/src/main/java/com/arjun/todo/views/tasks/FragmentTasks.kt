@@ -1,5 +1,7 @@
 package com.arjun.todo.views.tasks
 
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -22,6 +24,7 @@ import com.arjun.todo.data.Task
 import com.arjun.todo.databinding.FragmentTasksBinding
 import com.arjun.todo.util.exhaustive
 import com.arjun.todo.util.onQueryTextChanged
+import com.arjun.todo.views.ItemSwipeCallback
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -55,6 +58,13 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
 
         val binding = FragmentTasksBinding.bind(view)
 
+        val checkIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_check_24)!!
+        val uncheckIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_replay_24)!!
+        val deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_delete_24)!!
+        val greenBg = ColorDrawable(resources.getColor(R.color.leaf_green))
+        val yellowBg = ColorDrawable(resources.getColor(R.color.sun_yellow))
+        val redBg = ColorDrawable(resources.getColor(R.color.red))
+
         binding.apply {
             recyclerViewTasks.apply {
                 adapter = adapterTasks
@@ -62,20 +72,40 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
 //                setHasFixedSize(true)
                 addItemDecoration(dividerItemDecoration)
 
-                ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-                    override fun onMove(
-                        recyclerView: RecyclerView,
-                        viewHolder: RecyclerView.ViewHolder,
-                        target: RecyclerView.ViewHolder
-                    ): Boolean {
-                        return false
-                    }
-
+                ItemTouchHelper(object : ItemSwipeCallback(deleteIcon, redBg) {
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                         val task = adapterTasks.currentList[viewHolder.adapterPosition]
-                        viewModel.onTaskSwiped(task)
+                        viewModel.onTaskSwiped(task, direction)
                     }
 
+                    override fun getIconDrawable(viewHolder: RecyclerView.ViewHolder, direction: Int): Drawable? {
+                        return if (direction == ItemTouchHelper.RIGHT && viewHolder.adapterPosition != RecyclerView.NO_POSITION) {
+                            val task = adapterTasks.currentList[viewHolder.adapterPosition]
+                            if (task.completed xor isAnimating) {
+                                uncheckIcon
+                            } else {
+                                checkIcon
+                            }
+                        } else {
+                            super.getIconDrawable(viewHolder, direction)
+                        }
+                    }
+
+                    override fun getBackgroundDrawable(
+                        viewHolder: RecyclerView.ViewHolder,
+                        direction: Int
+                    ): Drawable? {
+                        return if (direction == ItemTouchHelper.RIGHT && viewHolder.adapterPosition != RecyclerView.NO_POSITION) {
+                            val task = adapterTasks.currentList[viewHolder.adapterPosition]
+                            if (task.completed xor isAnimating) {
+                                yellowBg
+                            } else {
+                                greenBg
+                            }
+                        } else {
+                            super.getBackgroundDrawable(viewHolder, direction)
+                        }
+                    }
                 }).attachToRecyclerView(recyclerViewTasks)
             }
 

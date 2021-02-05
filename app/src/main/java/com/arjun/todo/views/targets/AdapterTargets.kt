@@ -12,7 +12,6 @@ import com.arjun.todo.R
 import com.arjun.todo.data.Target
 import com.arjun.todo.databinding.ItemTargetBinding
 import com.arjun.todo.util.getMinsFormatted
-import kotlin.math.max
 
 class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
     ListAdapter<Target, AdapterTargets.ViewHolderTarget>(DiffCallback()) {

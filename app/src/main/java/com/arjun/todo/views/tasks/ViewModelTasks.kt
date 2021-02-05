@@ -3,6 +3,7 @@ package com.arjun.todo.views.tasks
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.arjun.todo.data.PreferencesManager
 import com.arjun.todo.data.SortOrder
 import com.arjun.todo.data.Task
@@ -54,9 +55,16 @@ class ViewModelTasks @ViewModelInject constructor(
         taskDao.update(task.copy(completed = checked))
     }
 
-    fun onTaskSwiped(task: Task) = viewModelScope.launch {
-        taskDao.delete(task)
-        tasksEventChannel.send(TasksEvent.ShowUndoDeleteTaskMessage(task))
+    fun onTaskSwiped(task: Task, direction: Int) = viewModelScope.launch {
+        when (direction) {
+            ItemTouchHelper.LEFT -> {
+                taskDao.delete(task)
+                tasksEventChannel.send(TasksEvent.ShowUndoDeleteTaskMessage(task))
+            }
+            ItemTouchHelper.RIGHT -> {
+                taskDao.update(task.copy(completed = !task.completed))
+            }
+        }
     }
 
     fun onUndoDeleteClick(task: Task) = viewModelScope.launch {
