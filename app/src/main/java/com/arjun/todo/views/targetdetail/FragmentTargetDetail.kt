@@ -3,6 +3,7 @@ package com.arjun.todo.views.targetdetail
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +41,7 @@ class FragmentTargetDetail : Fragment(R.layout.fragment_target_detail) {
             binding.apply {
                 tvTargetAmount.text = resources.getString(R.string.target_amount_text, getMinsFormatted(target.targetAmount))
                 tvTargetPeriod.text = target.period.capitalize(Locale.getDefault())
+                tvProgressIndicator.isInvisible = !target.isInProgress
                 tvTargetProgressPercent.text = "${target.progressPercent}%"
                 targetProgressBar.progress = target.progressPercent
                 tvTargetDone.text = resources.getString(R.string.target_progress_text, getMinsFormatted(target.currentProgress))
