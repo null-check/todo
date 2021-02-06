@@ -35,4 +35,7 @@ interface TargetDao {
 
     @Query("UPDATE target_table SET progress = 0, beginTimestamp = -1")
     fun resetAllTargets()
+
+    @Query("SELECT * FROM target_table WHERE beginTimestamp != -1")
+    fun getActiveTargets(): List<Target>
 }

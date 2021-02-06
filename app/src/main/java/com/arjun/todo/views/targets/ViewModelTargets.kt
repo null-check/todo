@@ -7,11 +7,9 @@ import com.arjun.todo.data.*
 import com.arjun.todo.data.Target
 import com.arjun.todo.views.ADD_TARGET_RESULT_OK
 import com.arjun.todo.views.EDIT_TARGET_RESULT_OK
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 
 class ViewModelTargets @ViewModelInject constructor(
     private val targetDao: TargetDao,
@@ -64,6 +62,12 @@ class ViewModelTargets @ViewModelInject constructor(
         if (target.isInProgress) {
             targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
         } else {
+            // Todo find out if we can do this with flow
+            withContext(Dispatchers.IO) {
+                targetDao.getActiveTargets().forEach { activeTarget ->
+                    targetDao.update(activeTarget.copy(progress = activeTarget.currentProgress, beginTimestamp = -1))
+                }
+            }
             targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
         }
     }
