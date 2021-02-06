@@ -28,15 +28,16 @@ abstract class TodoDatabase : RoomDatabase() {
             val targetDao = databaseProvider.get().targetDao();
 
             applicationScope.launch {
-                taskDao.insert(Task("EWosh the dishies"))
-                taskDao.insert(Task("AWosh the dishies2", completed = true))
-                taskDao.insert(Task("DWosh the dishies3"))
-                taskDao.insert(Task("CWosh the dishies4"))
-                taskDao.insert(Task("BWosh the dishies5"))
+                taskDao.insert(Task("Wash the dishes"))
+                taskDao.insert(Task("Buy groceries", completed = true))
+                taskDao.insert(Task("Cook lunch"))
+                taskDao.insert(Task("Finish a book"))
+                taskDao.insert(Task("Call Elon Musk"))
 
                 targetDao.insert(Target("Work", 8*60, 0))
                 targetDao.insert(Target("Learn", 4*60, 1*60))
-                targetDao.insert(Target("Learn", 30, 10))
+                targetDao.insert(Target("Code", 30, 10, beginTimestamp = System.currentTimeMillis()))
+                targetDao.insert(Target("Exercise", 2*60, 10))
             }
         }
     }
