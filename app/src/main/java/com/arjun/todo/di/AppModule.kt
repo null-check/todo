@@ -2,9 +2,12 @@ package com.arjun.todo.di
 
 import android.app.Application
 import androidx.room.Room
+import androidx.work.Configuration
+import com.arjun.todo.BuildConfig
 import com.arjun.todo.data.TargetDao
 import com.arjun.todo.data.TaskDao
 import com.arjun.todo.data.TodoDatabase
+import com.arjun.todo.workers.IoSchedWorkerFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,6 +41,17 @@ object AppModule {
     @Provides
     @Singleton
     fun provideApplicationScope() = CoroutineScope(SupervisorJob())
+
+    @Singleton
+    @Provides
+    fun provideWorkManagerConfiguration(
+        ioSchedWorkerFactory: IoSchedWorkerFactory
+    ): Configuration {
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(if (BuildConfig.DEBUG) android.util.Log.DEBUG else android.util.Log.ERROR)
+            .setWorkerFactory(ioSchedWorkerFactory)
+            .build()
+    }
 }
 
 @Retention(AnnotationRetention.RUNTIME)

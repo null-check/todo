@@ -19,14 +19,20 @@ interface TargetDao {
     fun getTargetsSortedByDate(searchQuery: String): Flow<List<Target>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(task: Target)
+    suspend fun insert(target: Target)
 
     @Update
-    suspend fun update(task: Target)
+    suspend fun update(target: Target)
 
     @Delete
-    suspend fun delete(task: Target)
+    suspend fun delete(target: Target)
 
     @Query("SELECT * FROM target_table WHERE id = :targetId")
     fun getTarget(targetId: Int): Flow<Target>
+
+    @Query("UPDATE target_table SET progress = 0, beginTimestamp = -1 WHERE period = 'DAILY'")
+    fun resetDailyTargets()
+
+    @Query("UPDATE target_table SET progress = 0, beginTimestamp = -1")
+    fun resetAllTargets()
 }

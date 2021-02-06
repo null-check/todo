@@ -13,13 +13,11 @@ abstract class ItemSwipeCallback internal constructor(
     private val defaultBackgroundDrawable: Drawable
 ) : ItemTouchHelper.Callback() {
 
-    private val mClearPaint: Paint = Paint()
+    private val mClearPaint: Paint = Paint().apply {
+        xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+    }
     private val iconWidth: Int = defaultIconDrawable.intrinsicWidth
     private val iconHeight: Int = defaultIconDrawable.intrinsicHeight
-
-    init {
-        mClearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-    }
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,

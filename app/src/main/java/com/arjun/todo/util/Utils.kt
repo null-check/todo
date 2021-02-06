@@ -1,7 +1,9 @@
 package com.arjun.todo.util
 
+import java.util.*
+
 val <T> T.exhaustive: T
-        get() = this
+    get() = this
 
 fun convertMillisToMins(millis: Long): Int = (millis / 60000).toInt()
 
@@ -23,4 +25,16 @@ fun getMinsFormatted(mins: Int): String {
     } else {
         minsString
     }
+}
+
+fun getNextResetTime(): Long {
+    val currentTime = Calendar.getInstance()
+    val dueTime = Calendar.getInstance()
+    dueTime.set(Calendar.HOUR_OF_DAY, 0)
+    dueTime.set(Calendar.MINUTE, 0)
+    dueTime.set(Calendar.SECOND, 0)
+    if (dueTime.timeInMillis  - currentTime.timeInMillis < 10000) { // Debounce of 10 seconds
+        dueTime.add(Calendar.HOUR_OF_DAY, 24)
+    }
+    return dueTime.timeInMillis - currentTime.timeInMillis
 }

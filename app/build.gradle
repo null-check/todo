@@ -83,6 +83,12 @@ dependencies {
 
     // DataStore
     implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
+
+    // WorkManager
+    // implementation "androidx.work:work-runtime:$workManagerVersion"
+    implementation "androidx.work:work-runtime-ktx:$workManagerVersion"
+    implementation "androidx.work:work-multiprocess:$workManagerVersion"
+    androidTestImplementation "androidx.work:work-testing:$workManagerVersion"
 }
 
 kapt {
