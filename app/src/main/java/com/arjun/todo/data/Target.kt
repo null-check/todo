@@ -3,8 +3,7 @@ package com.arjun.todo.data
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.arjun.todo.util.convertMillisToMins
-import com.arjun.todo.util.convertMinsToMillis
+import com.arjun.todo.util.convertMillisToSecs
 import kotlinx.android.parcel.Parcelize
 import java.text.DateFormat
 import kotlin.math.max
@@ -25,13 +24,13 @@ data class Target(
         get() = DateFormat.getDateTimeInstance().format(created)
 
     val targetHours: Int
-        get() = targetAmount / 60
+        get() = targetMins / 60
 
     val targetMins: Int
-        get() = targetAmount % 60
+        get() = targetAmount / 60
 
     val currentProgress: Int
-        get() = if (isInProgress) progress + convertMillisToMins(System.currentTimeMillis() - beginTimestamp) else progress
+        get() = if (isInProgress) progress + convertMillisToSecs(System.currentTimeMillis() - beginTimestamp) else progress
 
     val progressPercent: Int
         get() = min(100, 100 * currentProgress / targetAmount)

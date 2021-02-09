@@ -20,9 +20,6 @@ class ViewModelTargets @ViewModelInject constructor(
     val searchQueryFlow = state.getLiveData<String>("searchQuery", "")
     val preferencesFlow = preferencesManager.preferencesFlow
 
-    private val targetsEventChannel = Channel<TargetsEvent>()
-    val targetsEvent = targetsEventChannel.receiveAsFlow()
-
     private val targetsFlow = combine(
         searchQueryFlow.asFlow(),
         preferencesFlow
@@ -58,19 +55,31 @@ class ViewModelTargets @ViewModelInject constructor(
         targetsEventChannel.send(TargetsEvent.ShowTaskSavedMessage(message))
     }
 
-    fun onTaskSwiped(target: Target) = viewModelScope.launch {
+    fun onTaskSwiped(target: Target) {
         if (target.isInProgress) {
-            targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
+            pauseTarget(target)
         } else {
-            // Todo find out if we can do this with flow
-            withContext(Dispatchers.IO) {
-                targetDao.getActiveTargets().forEach { activeTarget ->
-                    targetDao.update(activeTarget.copy(progress = activeTarget.currentProgress, beginTimestamp = -1))
-                }
-            }
-            targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
+            stopActiveTargets()
+            startTarget(target)
         }
     }
+
+    private fun stopActiveTargets() = viewModelScope.launch {
+        targetDao.getActiveTargets().forEach { activeTarget ->
+            targetDao.update(activeTarget.copy(progress = activeTarget.currentProgress, beginTimestamp = -1))
+        }
+    }
+
+    private fun startTarget(target: Target) = viewModelScope.launch {
+        targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
+    }
+
+    private fun pauseTarget(target: Target) = viewModelScope.launch {
+        targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
+    }
+
+    private val targetsEventChannel = Channel<TargetsEvent>()
+    val targetsEvent = targetsEventChannel.receiveAsFlow()
 
     sealed class TargetsEvent {
         object NavigateToAddTargetScreen : TargetsEvent()

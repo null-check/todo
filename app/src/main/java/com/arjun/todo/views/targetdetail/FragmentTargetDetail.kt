@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.arjun.todo.R
 import com.arjun.todo.databinding.FragmentTargetDetailBinding
 import com.arjun.todo.util.exhaustive
-import com.arjun.todo.util.getMinsFormatted
+import com.arjun.todo.util.getSecsFormatted
 import com.arjun.todo.views.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -39,13 +39,13 @@ class FragmentTargetDetail : Fragment(R.layout.fragment_target_detail) {
 
         viewModel.target.observe(viewLifecycleOwner) { target ->
             binding.apply {
-                tvTargetAmount.text = resources.getString(R.string.target_amount_text, getMinsFormatted(target.targetAmount))
+                tvTargetAmount.text = resources.getString(R.string.target_amount_text, getSecsFormatted(target.targetAmount))
                 tvTargetPeriod.text = target.period.capitalize(Locale.getDefault())
                 tvProgressIndicator.isInvisible = !target.isInProgress
                 tvTargetProgressPercent.text = "${target.progressPercent}%"
                 targetProgressBar.progress = target.progressPercent
-                tvTargetDone.text = resources.getString(R.string.target_progress_text, getMinsFormatted(target.currentProgress))
-                tvTargetRemaining.text = resources.getString(R.string.target_remaining_text, getMinsFormatted(target.remainingAmount))
+                tvTargetDone.text = resources.getString(R.string.target_progress_text, getSecsFormatted(target.currentProgress))
+                tvTargetRemaining.text = resources.getString(R.string.target_remaining_text, getSecsFormatted(target.remainingAmount))
 
                 primaryButton.text = if (viewModel.target.value!!.isInProgress) "End session" else "Begin session"
                 primaryButton.apply {

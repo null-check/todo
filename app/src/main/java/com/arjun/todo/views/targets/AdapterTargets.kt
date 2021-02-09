@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arjun.todo.R
 import com.arjun.todo.data.Target
 import com.arjun.todo.databinding.ItemTargetBinding
-import com.arjun.todo.util.getMinsFormatted
+import com.arjun.todo.util.getSecsFormatted
 
 class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
     ListAdapter<Target, AdapterTargets.ViewHolderTarget>(DiffCallback()) {
@@ -42,9 +42,9 @@ class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
             binding.apply {
                 tvName.text = target.name
                 tvProgressIndicator.isVisible = target.isInProgress
-                tvTargetAmount.text = itemView.context.getString(R.string.target_amount_text, getMinsFormatted(target.targetAmount))
-                tvTargetProgress.text = itemView.context.getString(R.string.target_progress_text, getMinsFormatted(target.currentProgress))
-                tvTargetRemaining.text = itemView.context.getString(R.string.target_remaining_text, getMinsFormatted(target.remainingAmount))
+                tvTargetAmount.text = itemView.context.getString(R.string.target_amount_text, getSecsFormatted(target.targetAmount))
+                tvTargetProgress.text = itemView.context.getString(R.string.target_progress_text, getSecsFormatted(target.currentProgress))
+                tvTargetRemaining.text = itemView.context.getString(R.string.target_remaining_text, getSecsFormatted(target.remainingAmount))
                 (bgProgress.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = target.progressPercent.toFloat() / 100
                 bgProgress.setBackgroundColor(ContextCompat.getColor(itemView.context, if (target.isDone) R.color.progress_green else R.color.baby_blue))
             }

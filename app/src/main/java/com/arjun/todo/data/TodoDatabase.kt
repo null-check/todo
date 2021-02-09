@@ -34,10 +34,10 @@ abstract class TodoDatabase : RoomDatabase() {
                 taskDao.insert(Task("Finish a book"))
                 taskDao.insert(Task("Call Elon Musk"))
 
-                targetDao.insert(Target("Work", 8*60, 0))
-                targetDao.insert(Target("Learn", 4*60, 1*60))
-                targetDao.insert(Target("Code", 30, 10, beginTimestamp = System.currentTimeMillis()))
-                targetDao.insert(Target("Exercise", 2*60, 10))
+                targetDao.insert(Target("Work", 8*60*60, 0))
+                targetDao.insert(Target("Learn", 4*60*60, 1*60*60))
+                targetDao.insert(Target("Code", 30*60, 10*60, beginTimestamp = System.currentTimeMillis()))
+                targetDao.insert(Target("Exercise", 2*60*60, 10*60))
             }
         }
     }

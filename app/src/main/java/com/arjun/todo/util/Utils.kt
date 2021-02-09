@@ -5,12 +5,13 @@ import java.util.*
 val <T> T.exhaustive: T
     get() = this
 
+fun convertMillisToSecs(millis: Long): Int = (millis / 1000).toInt()
+
 fun convertMillisToMins(millis: Long): Int = (millis / 60000).toInt()
 
 fun convertMinsToMillis(mins: Int): Long = (mins * 60000).toLong()
 
 fun getMinsFormatted(mins: Int): String {
-
     val hours = mins.div(60)
     val minsRem = mins.rem(60)
 
@@ -24,6 +25,30 @@ fun getMinsFormatted(mins: Int): String {
         }
     } else {
         minsString
+    }
+}
+
+fun getSecsFormatted(secs: Int): String {
+    val mins = secs.div(60)
+
+    return if (mins > 0) {
+        val hours = mins.div(60)
+        val minsRem = mins.rem(60)
+        val minsString = if (minsRem == 1) "$minsRem Min" else "$minsRem Mins"
+
+        if (hours > 0) {
+            val hoursString = if (hours == 1) "$hours Hour" else "$hours Hours"
+            if (minsRem != 0) {
+                "$hoursString $minsString"
+            } else {
+                hoursString
+            }
+        } else {
+            minsString
+        }
+    } else {
+        val secsRem = secs.rem(60)
+        if (secsRem == 1) "$secsRem Second" else "$secsRem Seconds"
     }
 }
 

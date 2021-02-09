@@ -8,11 +8,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.arjun.todo.data.Target
 import com.arjun.todo.data.TargetDao
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ViewModelTargetDetail @ViewModelInject constructor(
     private val targetDao: TargetDao,
@@ -25,16 +23,25 @@ class ViewModelTargetDetail @ViewModelInject constructor(
         val target = target.value!!
 
         if (target.isInProgress) {
-            targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
+            pauseTarget(target)
         } else {
-            withContext(Dispatchers.IO) {
-                targetDao.getActiveTargets().forEach { activeTarget ->
-                    targetDao.update(activeTarget.copy(progress = activeTarget.currentProgress, beginTimestamp = -1))
-                }
-                targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
-            }
-            targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
+            stopActiveTargets()
+            startTarget(target)
         }
+    }
+
+    private fun stopActiveTargets() = viewModelScope.launch {
+        targetDao.getActiveTargets().forEach { activeTarget ->
+            targetDao.update(activeTarget.copy(progress = activeTarget.currentProgress, beginTimestamp = -1))
+        }
+    }
+
+    private fun startTarget(target: Target) = viewModelScope.launch {
+        targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
+    }
+
+    private fun pauseTarget(target: Target) = viewModelScope.launch {
+        targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
     }
 
     private val targetDetailEventChannel = Channel<TargetDetailEvent>()

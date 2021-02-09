@@ -50,19 +50,20 @@ class ViewModelAddEditTarget @ViewModelInject constructor(
             return
         }
 
-        val targetAmount = 60 * targetHours + targetMins
-        if (targetAmount <= 0) {
+        val targetInMins = 60 * targetHours + targetMins
+        val targetInSecs = 60 * targetInMins
+        if (targetInMins <= 0) {
             showInvalidInputMessage("Target has to be at least 1 minute")
         }
 
         if (target != null) {
             updateTarget(target.copy(name = targetName,
-                targetAmount = targetAmount,
+                targetAmount = targetInSecs,
                 period = (if (isDaily) TargetPeriod.DAILY else TargetPeriod.WEEKLY).name,
                 progress = target.currentProgress))
         } else {
             createTarget(Target(name = targetName,
-                targetAmount = targetAmount,
+                targetAmount = targetInSecs,
                 period = (if (isDaily) TargetPeriod.DAILY else TargetPeriod.WEEKLY).name))
         }
     }
