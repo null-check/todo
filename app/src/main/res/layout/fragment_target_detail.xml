@@ -27,7 +27,7 @@
                 android:textColor="@color/darker_grey"
                 android:layout_marginTop="4dp"
                 android:layout_marginHorizontal="4dp"
-                android:text="Details"/>
+                android:text="@string/details"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginHorizontal="4dp"
-                android:text="In Progress"
+                android:text="@string/target_in_progress"
                 android:textSize="12sp"
                 android:textColor="@color/leaf_green"/>
 
@@ -111,18 +111,25 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/reset_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:text="@string/clear_progress"/>
+
+        <Button
             android:id="@+id/edit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:text="Edit"/>
+            android:text="@string/edit"/>
 
         <Button
             android:id="@+id/primary_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:text="Begin"/>
+            tools:text="Begin Session"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

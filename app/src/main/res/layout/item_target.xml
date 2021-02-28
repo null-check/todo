@@ -50,7 +50,7 @@
             android:layout_marginLeft="4dp"
             android:textSize="12sp"
             android:textColor="@color/leaf_green"
-            android:text="In Progress"/>
+            android:text="@string/target_in_progress"/>
     </LinearLayout>
 
     <TextView

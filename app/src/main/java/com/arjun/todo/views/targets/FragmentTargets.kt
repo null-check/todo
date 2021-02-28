@@ -66,7 +66,7 @@ class FragmentTargets : Fragment(R.layout.fragment_targets) {
                 ItemTouchHelper(object : ItemSwipeCallback(startIcon, greenBg) {
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                         val target = adapterTargets.currentList[viewHolder.adapterPosition]
-                        viewModel.onTaskSwiped(target)
+                        viewModel.onTargetSwiped(target)
                     }
 
                     override fun getIconDrawable(
@@ -133,8 +133,11 @@ class FragmentTargets : Fragment(R.layout.fragment_targets) {
                             )
                         findNavController().navigate(action)
                     }
-                    is ViewModelTargets.TargetsEvent.ShowTaskSavedMessage -> {
+                    is ViewModelTargets.TargetsEvent.ShowTargetSavedMessage -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
+                    }
+                    is ViewModelTargets.TargetsEvent.UpdateTargetProgress -> {
+                        adapterTargets.notifyItemChanged(adapterTargets.currentList.indexOf(event.target))
                     }
                 }.exhaustive
             }

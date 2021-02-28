@@ -51,6 +51,10 @@ class ViewModelTargetDetail @ViewModelInject constructor(
         targetDetailEventChannel.send(TargetDetailEvent.NavigateToEditTarget(target))
     }
 
+    fun onResetButtonClicked(target: Target) = viewModelScope.launch {
+        targetDao.update(target.copy(progress = 0, beginTimestamp = -1))
+    }
+
     sealed class TargetDetailEvent {
         data class NavigateToEditTarget(val target: Target) : TargetDetailEvent()
     }

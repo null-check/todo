@@ -17,8 +17,17 @@
     <!-- Targets list -->
     <string name="add_target">Add target</string>
     <string name="target_amount_text">Target: %s</string>
-    <string name="target_progress_text">You spent: %s</string>
+    <string name="target_progress_text">Progress: %s</string>
     <string name="target_remaining_text">Remaining: %s</string>
+    <string name="target_done_text">Target achieved</string>
+    <string name="target_in_progress">In Progress</string>
+
+    <!-- Target Detail -->
+    <string name="end_session">End session</string>
+    <string name="begin_session">Begin session</string>
+    <string name="details">Details</string>
+    <string name="clear_progress">Clear progress</string>
+    <string name="edit">Edit</string>
 
     <!-- Add edit target -->
     <string name="target_name">Target name</string>

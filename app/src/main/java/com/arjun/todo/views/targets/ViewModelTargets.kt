@@ -46,16 +46,16 @@ class ViewModelTargets @ViewModelInject constructor(
 
     fun onAddEditResult(result: Int) {
         when (result) {
-            ADD_TARGET_RESULT_OK -> showTaskSavedConfirmationMessage("Task added")
-            EDIT_TARGET_RESULT_OK -> showTaskSavedConfirmationMessage("Task updated")
+            ADD_TARGET_RESULT_OK -> showTargetSavedConfirmationMessage("Target added")
+            EDIT_TARGET_RESULT_OK -> showTargetSavedConfirmationMessage("Target updated")
         }
     }
 
-    private fun showTaskSavedConfirmationMessage(message: String) = viewModelScope.launch {
-        targetsEventChannel.send(TargetsEvent.ShowTaskSavedMessage(message))
+    private fun showTargetSavedConfirmationMessage(message: String) = viewModelScope.launch {
+        targetsEventChannel.send(TargetsEvent.ShowTargetSavedMessage(message))
     }
 
-    fun onTaskSwiped(target: Target) {
+    fun onTargetSwiped(target: Target) {
         if (target.isInProgress) {
             pauseTarget(target)
         } else {
@@ -84,6 +84,7 @@ class ViewModelTargets @ViewModelInject constructor(
     sealed class TargetsEvent {
         object NavigateToAddTargetScreen : TargetsEvent()
         data class NavigateToTargetDetailScreen(val target: Target) : TargetsEvent()
-        data class ShowTaskSavedMessage(val message: String) : TargetsEvent()
+        data class ShowTargetSavedMessage(val message: String) : TargetsEvent()
+        data class UpdateTargetProgress(val target: Target) : TargetsEvent()
     }
 }

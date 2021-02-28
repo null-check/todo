@@ -1,5 +1,6 @@
 package com.arjun.todo.views.targets
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arjun.todo.R
 import com.arjun.todo.data.Target
 import com.arjun.todo.databinding.ItemTargetBinding
+import com.arjun.todo.util.convertSecsToMillis
 import com.arjun.todo.util.getSecsFormatted
 
 class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
@@ -25,8 +27,20 @@ class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
         holder.bind(getItem(position))
     }
 
+    override fun onViewRecycled(holder: ViewHolderTarget) {
+        super.onViewRecycled(holder)
+//        holder.countDownTimer?.cancel() TODO required?
+    }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolderTarget) {
+        super.onViewDetachedFromWindow(holder)
+//        holder.countDownTimer?.cancel() TODO required?
+    }
+
     inner class ViewHolderTarget constructor(private val binding: ItemTargetBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        var countDownTimer: CountDownTimer? = null
 
         init {
             binding.apply {
@@ -43,10 +57,39 @@ class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
                 tvName.text = target.name
                 tvProgressIndicator.isVisible = target.isInProgress
                 tvTargetAmount.text = itemView.context.getString(R.string.target_amount_text, getSecsFormatted(target.targetAmount))
-                tvTargetProgress.text = itemView.context.getString(R.string.target_progress_text, getSecsFormatted(target.currentProgress))
-                tvTargetRemaining.text = itemView.context.getString(R.string.target_remaining_text, getSecsFormatted(target.remainingAmount))
-                (bgProgress.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = target.progressPercent.toFloat() / 100
+                updateProgress(target)
                 bgProgress.setBackgroundColor(ContextCompat.getColor(itemView.context, if (target.isDone) R.color.progress_green else R.color.baby_blue))
+            }
+
+            if (target.isInProgress && !target.isDone) {
+                countDownTimer?.cancel()
+                countDownTimer = object : CountDownTimer(convertSecsToMillis(target.remainingAmount), 1000) {
+                    override fun onTick(p0: Long) {
+                        updateProgress(target)
+                    }
+
+                    override fun onFinish() {
+                        updateProgress(target)
+                        binding.bgProgress.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.progress_green))
+                    }
+                }.start()
+            } else {
+                countDownTimer?.cancel()
+            }
+        }
+
+        private fun updateProgress(target: Target) {
+            binding.apply {
+                tvTargetProgress.text = itemView.context.getString(R.string.target_progress_text, getSecsFormatted(target.currentProgress))
+                if (target.isDone) {
+                    tvTargetRemaining.text = itemView.context.getString(R.string.target_done_text)
+                    tvTargetRemaining.setTextColor(ContextCompat.getColor(itemView.context, R.color.leaf_green))
+                } else {
+                    tvTargetRemaining.text = itemView.context.getString(R.string.target_remaining_text, getSecsFormatted(target.remainingAmount))
+                    tvTargetRemaining.setTextColor(ContextCompat.getColor(itemView.context, R.color.grey))
+                }
+                (bgProgress.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = target.progressPercent.toFloat() / 100
+                bgProgress.requestLayout()
             }
         }
     }

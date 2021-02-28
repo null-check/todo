@@ -27,6 +27,7 @@ abstract class TodoDatabase : RoomDatabase() {
             val taskDao = databaseProvider.get().taskDao();
             val targetDao = databaseProvider.get().targetDao();
 
+            // Mock data for testing
             applicationScope.launch {
                 taskDao.insert(Task("Wash the dishes"))
                 taskDao.insert(Task("Buy groceries", completed = true))

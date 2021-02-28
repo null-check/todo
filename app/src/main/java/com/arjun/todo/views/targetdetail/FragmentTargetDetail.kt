@@ -28,6 +28,10 @@ class FragmentTargetDetail : Fragment(R.layout.fragment_target_detail) {
         val binding = FragmentTargetDetailBinding.bind(view)
 
         binding.apply {
+            resetButton.setOnClickListener {
+                viewModel.onResetButtonClicked(viewModel.target.value!!)
+            }
+
             editButton.setOnClickListener {
                 viewModel.onEditButtonClicked(viewModel.target.value!!)
             }
@@ -47,13 +51,13 @@ class FragmentTargetDetail : Fragment(R.layout.fragment_target_detail) {
                 tvTargetDone.text = resources.getString(R.string.target_progress_text, getSecsFormatted(target.currentProgress))
                 tvTargetRemaining.text = resources.getString(R.string.target_remaining_text, getSecsFormatted(target.remainingAmount))
 
-                primaryButton.text = if (viewModel.target.value!!.isInProgress) "End session" else "Begin session"
+                resetButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
                 primaryButton.apply {
-                    if (viewModel.target.value!!.isInProgress) {
-                        text = "End session"
-                        setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
+                    if (target.isInProgress) {
+                        text = resources.getString(R.string.end_session)
+                        setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.sun_yellow))
                     } else {
-                        text = "Begin session"
+                        text = resources.getString(R.string.begin_session)
                         setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.leaf_green))
                     }
                 }
