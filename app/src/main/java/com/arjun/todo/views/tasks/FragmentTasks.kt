@@ -69,7 +69,7 @@ class FragmentTasks : Fragment(R.layout.fragment_tasks) {
             recyclerViewTasks.apply {
                 adapter = adapterTasks
                 layoutManager = LinearLayoutManager(requireContext())
-//                setHasFixedSize(true)
+                setHasFixedSize(true)
                 addItemDecoration(dividerItemDecoration)
 
                 ItemTouchHelper(object : ItemSwipeCallback(deleteIcon, redBg) {
