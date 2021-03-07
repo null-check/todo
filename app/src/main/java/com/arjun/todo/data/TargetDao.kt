@@ -1,5 +1,6 @@
 package com.arjun.todo.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -38,4 +39,7 @@ interface TargetDao {
 
     @Query("SELECT * FROM target_table WHERE beginTimestamp != -1")
     suspend fun getActiveTargets(): List<Target>
+
+    @Query("SELECT SUM(targetAmount) FROM target_table")
+    fun observeTotalTargetAmount(): LiveData<Int>
 }
