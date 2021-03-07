@@ -10,8 +10,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.arjun.todo.R
+import com.arjun.todo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 
 private const val TAG = "MainActivity"
 
@@ -22,11 +22,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 //        setSupportActionBar(findViewById(R.id.toolbar))
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val bottomNavigationView = nav_view
+        val bottomNavigationView = binding.navView
 
         navController = navHostFragment.findNavController()
         // Passing each menu ID as a set of Ids because each
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
+//    Todo: add settings item to global action bar menu
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        // Inflate the menu; this adds items to the action bar if it is present.
 //        menuInflater.inflate(R.menu.menu_main, menu)
