@@ -20,7 +20,7 @@
     <string name="target_progress_text">Progress: %s</string>
     <string name="target_remaining_text">Remaining: %s</string>
     <string name="target_done_text">Target achieved</string>
-    <string name="target_in_progress">In Progress</string>
+    <string name="target_in_progress">IN PROGRESS</string>
 
     <!-- Target Detail -->
     <string name="end_session">End session</string>
@@ -39,4 +39,12 @@
     <!-- Add edit task -->
     <string name="task_name">Task name</string>
     <string name="save_task">Save task</string>
+
+    <!-- Notifications -->
+    <string name="channel_name_target_finish">Target Finished</string>
+    <string name="channel_description_target_finish">Target has been finished</string>
+    <string name="title_target_finished">%s finished!</string>
+    <string name="text_target_finished"> You have achieved the set target for %s</string>
+    <string name="text_left_caps">LEFT</string>
+    <string name="text_done_caps">DONE</string>
 </resources>

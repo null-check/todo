@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -56,7 +57,7 @@ class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
             binding.apply {
                 tvName.text = target.name
                 tvProgressIndicator.isVisible = target.isInProgress
-                tvTargetAmount.text = itemView.context.getString(R.string.target_amount_text, getSecsFormatted(target.targetAmount))
+                tvTargetAmount.text = getSecsFormatted(target.targetAmount)
                 updateProgress(target)
                 bgProgress.setBackgroundColor(ContextCompat.getColor(itemView.context, if (target.isDone) R.color.progress_green else R.color.baby_blue))
             }
@@ -80,12 +81,12 @@ class AdapterTargets(private val targetClickListener: OnTargetClickListener) :
 
         private fun updateProgress(target: Target) {
             binding.apply {
-                tvTargetProgress.text = itemView.context.getString(R.string.target_progress_text, getSecsFormatted(target.currentProgress))
+                tvTargetProgress.text = getSecsFormatted(target.currentProgress)
                 if (target.isDone) {
                     tvTargetRemaining.text = itemView.context.getString(R.string.target_done_text)
                     tvTargetRemaining.setTextColor(ContextCompat.getColor(itemView.context, R.color.leaf_green))
                 } else {
-                    tvTargetRemaining.text = itemView.context.getString(R.string.target_remaining_text, getSecsFormatted(target.remainingAmount))
+                    tvTargetRemaining.text = getSecsFormatted(target.remainingAmount)
                     tvTargetRemaining.setTextColor(ContextCompat.getColor(itemView.context, R.color.grey))
                 }
                 (bgProgress.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = target.progressPercent.toFloat() / 100

@@ -7,7 +7,8 @@ import com.arjun.todo.BuildConfig
 import com.arjun.todo.data.TargetDao
 import com.arjun.todo.data.TaskDao
 import com.arjun.todo.data.TodoDatabase
-import com.arjun.todo.workers.IoSchedWorkerFactory
+import com.arjun.todo.time.alarm.AlarmBuilder
+import com.arjun.todo.time.workers.IoSchedWorkerFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,6 +52,12 @@ object AppModule {
             .setMinimumLoggingLevel(if (BuildConfig.DEBUG) android.util.Log.DEBUG else android.util.Log.ERROR)
             .setWorkerFactory(ioSchedWorkerFactory)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAlarmBuilder(app: Application): AlarmBuilder {
+        return AlarmBuilder(app)
     }
 }
 

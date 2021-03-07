@@ -5,6 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.arjun.todo.data.*
 import com.arjun.todo.data.Target
+import com.arjun.todo.time.alarm.AlarmBuilder
 import com.arjun.todo.views.ADD_TARGET_RESULT_OK
 import com.arjun.todo.views.EDIT_TARGET_RESULT_OK
 import kotlinx.coroutines.*
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.*
 class ViewModelTargets @ViewModelInject constructor(
     private val targetDao: TargetDao,
     private val preferencesManager: PreferencesManager,
+    private val alarmBuilder: AlarmBuilder,
     @Assisted private val state: SavedStateHandle
 ) : ViewModel() {
 
@@ -72,10 +74,14 @@ class ViewModelTargets @ViewModelInject constructor(
 
     private fun startTarget(target: Target) = viewModelScope.launch {
         targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
+        if (!target.isDone) {
+            alarmBuilder.setTargetFinishAlarm(target)
+        }
     }
 
     private fun pauseTarget(target: Target) = viewModelScope.launch {
         targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
+        alarmBuilder.cancelLastAlarm()
     }
 
     private val targetsEventChannel = Channel<TargetsEvent>()

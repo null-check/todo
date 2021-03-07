@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/tv_target_progress"
+        app:layout_constraintRight_toLeftOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_target_amount">
 
@@ -46,12 +46,27 @@
             android:id="@+id/tv_progress_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="3dp"
             android:layout_marginLeft="4dp"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/leaf_green"
             android:text="@string/target_in_progress"/>
     </LinearLayout>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_target_amount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textColor="@color/grey"
+        android:layout_marginLeft="16dp"
+        android:text="TARGET"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_target_amount"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_target_amount"/>
 
     <TextView
         android:id="@+id/tv_target_amount"
@@ -59,40 +74,89 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textColor="@color/dark_grey"
-        tools:text="Target: 10 hrs"
-        app:layout_constraintLeft_toLeftOf="@id/ll_name_section"
-        app:layout_constraintRight_toRightOf="@id/ll_name_section"
+        tools:text="10 hrs"
+        android:layout_marginLeft="8dp"
+        app:layout_goneMarginLeft="16dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_target_amount_label"
+        app:layout_constraintRight_toLeftOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/ll_name_section"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="vertical"/>
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/active_indicator"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@color/red"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintRight_toLeftOf="@+id/tv_target_progress"
+        app:layout_constraintTop_toTopOf="@id/tv_target_progress"
+        app:layout_constraintBottom_toBottomOf="@id/tv_target_progress"/>
+
     <TextView
         android:id="@+id/tv_target_progress"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="@color/grey"
+        android:textColor="@color/dark_grey"
         android:gravity="right"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
-        tools:text="You Spent: 4 hrs"
+        android:layout_marginRight="8dp"
+        tools:text="4 hrs"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintLeft_toRightOf="@id/ll_name_section"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/active_indicator"
+        app:layout_constraintRight_toLeftOf="@id/tv_target_progress_label"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_target_remaining"/>
+
+    <TextView
+        android:id="@+id/tv_target_progress_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textColor="@color/grey"
+        android:layout_marginRight="16dp"
+        android:text="@string/text_done_caps"
+        app:layout_constraintLeft_toRightOf="@id/tv_target_progress"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_target_progress"/>
 
     <TextView
         android:id="@+id/tv_target_remaining"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="@color/grey"
+        android:textColor="@color/dark_grey"
         android:gravity="right"
-        tools:text="Remaining: 6 hrs"
+        tools:text="6 hrs"
         android:layout_marginTop="4dp"
-        app:layout_constraintLeft_toLeftOf="@id/tv_target_progress"
-        app:layout_constraintRight_toRightOf="@id/tv_target_progress"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_goneMarginRight="30dp"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintRight_toLeftOf="@id/tv_target_remaining_label"
         app:layout_constraintTop_toBottomOf="@id/tv_target_progress"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_target_remaining_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textColor="@color/grey"
+        android:layout_marginRight="16dp"
+        android:text="@string/text_left_caps"
+        app:layout_constraintLeft_toLeftOf="@id/tv_target_progress_label"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_target_remaining"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

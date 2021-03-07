@@ -1,4 +1,4 @@
-package com.arjun.todo.workers
+package com.arjun.todo.time.workers
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.arjun.todo.data.TargetDao
-import com.arjun.todo.util.convertMillisToMins
 import com.arjun.todo.util.getNextResetTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

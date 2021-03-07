@@ -22,6 +22,8 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".time.alarm.TargetFinishAlarmReceiver"/>
+
         <!-- For custom WorkManager config -->
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

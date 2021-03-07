@@ -8,12 +8,14 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.arjun.todo.data.Target
 import com.arjun.todo.data.TargetDao
+import com.arjun.todo.time.alarm.AlarmBuilder
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class ViewModelTargetDetail @ViewModelInject constructor(
     private val targetDao: TargetDao,
+    private val alarmBuilder: AlarmBuilder,
     @Assisted private val state: SavedStateHandle
 ) : ViewModel() {
     private val targetFlow = targetDao.getTarget(state.get<Target>("target")!!.id)
@@ -38,10 +40,14 @@ class ViewModelTargetDetail @ViewModelInject constructor(
 
     private fun startTarget(target: Target) = viewModelScope.launch {
         targetDao.update(target.copy(beginTimestamp = System.currentTimeMillis()))
+        if (!target.isDone) {
+            alarmBuilder.setTargetFinishAlarm(target)
+        }
     }
 
     private fun pauseTarget(target: Target) = viewModelScope.launch {
         targetDao.update(target.copy(progress = target.currentProgress, beginTimestamp = -1))
+        alarmBuilder.cancelLastAlarm()
     }
 
     private val targetDetailEventChannel = Channel<TargetDetailEvent>()
