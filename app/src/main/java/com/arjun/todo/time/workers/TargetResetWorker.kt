@@ -29,16 +29,14 @@ class TargetResetWorker(
                 targetDao.resetDailyTargets()
             }
 
-            // Not using PeriodicWorkRequest since its not very accurate https://medium.com/androiddevelopers/workmanager-periodicity-ff35185ff006
-            val dueTime = getNextResetTime()
+            // Not using PeriodicWorkRequest to repeat since its not very accurate https://medium.com/androiddevelopers/workmanager-periodicity-ff35185ff006
+            val dueTime = getNextResetTime(Calendar.getInstance())
             val dailyWorkRequest = OneTimeWorkRequestBuilder<TargetResetWorker>()
                 .setInitialDelay(dueTime, TimeUnit.MILLISECONDS)
                 .addTag(TargetResetWorker::class.java.name)
                 .build()
 
             WorkManager.getInstance(applicationContext).enqueue(dailyWorkRequest)
-//            Log.d(TAG, "doWork(): WORK DONE!!!")
-//            Log.d(TAG, "Set up work " + convertMillisToMins(dueTime) + " mins from now!!!")
 
             return@withContext Result.success()
         } catch (error: Throwable) {

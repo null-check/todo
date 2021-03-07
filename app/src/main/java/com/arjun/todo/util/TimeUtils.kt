@@ -44,15 +44,15 @@ fun getSecsFormatted(secs: Int): String {
     }
 }
 
-// make sense to keep this in utils?
-// Function that returns the next time to reset all target progress
-fun getNextResetTime(): Long {
-    val currentTime = Calendar.getInstance()
+// returns the next timestamp at which to reset all target progress
+fun getNextResetTime(currentTime: Calendar): Long {
     val dueTime = Calendar.getInstance()
-    dueTime.set(Calendar.HOUR_OF_DAY, 0)
+    dueTime.set(Calendar.HOUR_OF_DAY, 24)
     dueTime.set(Calendar.MINUTE, 0)
     dueTime.set(Calendar.SECOND, 0)
-    if (dueTime.timeInMillis  - currentTime.timeInMillis < 10000) { // Debounce of 10 seconds
+
+    if (dueTime.timeInMillis  - currentTime.timeInMillis < 10000) {
+        // If calculated time is within 10 seconds, schedule it for next day
         dueTime.add(Calendar.HOUR_OF_DAY, 24)
     }
     return dueTime.timeInMillis - currentTime.timeInMillis

@@ -13,6 +13,7 @@ import com.arjun.todo.util.getNextResetTime
 import com.arjun.todo.time.workers.TargetResetWorker
 import com.arjun.todo.util.CHANNEL_ID_TARGET_FINISHED
 import dagger.hilt.android.HiltAndroidApp
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class TodoApplication : Application(), Configuration.Provider {
     private fun setupWorkManager() {
         val workManager = WorkManager.getInstance(applicationContext)
 
-        val dueTime = getNextResetTime()
+        val dueTime = getNextResetTime(Calendar.getInstance())
         val targetResetWorkRequest = OneTimeWorkRequestBuilder<TargetResetWorker>()
             .setInitialDelay(dueTime, TimeUnit.MILLISECONDS)
             .addTag(TargetResetWorker::class.java.name)
