@@ -78,6 +78,7 @@ dependencies {
     androidTestImplementation "com.google.truth:truth:$truthVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$archCoreVersion"
 
     // Fragment
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
