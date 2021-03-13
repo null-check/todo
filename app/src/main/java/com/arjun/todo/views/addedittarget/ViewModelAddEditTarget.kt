@@ -1,7 +1,5 @@
 package com.arjun.todo.views.addedittarget
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,13 +8,16 @@ import com.arjun.todo.data.TargetDao
 import com.arjun.todo.data.TargetPeriod
 import com.arjun.todo.views.ADD_TASK_RESULT_OK
 import com.arjun.todo.views.EDIT_TASK_RESULT_OK
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ViewModelAddEditTarget @ViewModelInject constructor(
+@HiltViewModel
+class ViewModelAddEditTarget @Inject constructor(
     private val targetDao: TargetDao,
-    @Assisted private val state: SavedStateHandle
+    private val state: SavedStateHandle
 ) : ViewModel() {
     val target = state.get<Target>("target")
 

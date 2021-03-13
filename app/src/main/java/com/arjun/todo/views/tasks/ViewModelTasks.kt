@@ -1,7 +1,5 @@
 package com.arjun.todo.views.tasks
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.arjun.todo.data.PreferencesManager
@@ -10,16 +8,19 @@ import com.arjun.todo.data.Task
 import com.arjun.todo.data.TaskDao
 import com.arjun.todo.views.ADD_TASK_RESULT_OK
 import com.arjun.todo.views.EDIT_TASK_RESULT_OK
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ViewModelTasks @ViewModelInject constructor(
+@HiltViewModel
+class ViewModelTasks @Inject constructor(
     private val taskDao: TaskDao,
     private val preferencesManager: PreferencesManager,
-    @Assisted private val state: SavedStateHandle
+    private val state: SavedStateHandle
 ) : ViewModel() {
 
     val searchQueryFlow = state.getLiveData<String>("searchQuery", "")

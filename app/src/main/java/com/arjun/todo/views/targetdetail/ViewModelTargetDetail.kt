@@ -1,7 +1,5 @@
 package com.arjun.todo.views.targetdetail
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -9,14 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.arjun.todo.data.Target
 import com.arjun.todo.data.TargetDao
 import com.arjun.todo.time.alarm.AlarmBuilder
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ViewModelTargetDetail @ViewModelInject constructor(
+@HiltViewModel
+class ViewModelTargetDetail @Inject constructor(
     private val targetDao: TargetDao,
     private val alarmBuilder: AlarmBuilder,
-    @Assisted private val state: SavedStateHandle
+    private val state: SavedStateHandle
 ) : ViewModel() {
     private val targetFlow = targetDao.getTarget(state.get<Target>("target")!!.id)
     val target = targetFlow.asLiveData()

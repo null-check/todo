@@ -1,22 +1,27 @@
 package com.arjun.todo.views.targets
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.arjun.todo.data.*
+import com.arjun.todo.data.PreferencesManager
+import com.arjun.todo.data.SortOrder
 import com.arjun.todo.data.Target
+import com.arjun.todo.data.TargetDao
 import com.arjun.todo.time.alarm.AlarmBuilder
 import com.arjun.todo.views.ADD_TARGET_RESULT_OK
 import com.arjun.todo.views.EDIT_TARGET_RESULT_OK
-import kotlinx.coroutines.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ViewModelTargets @ViewModelInject constructor(
+@HiltViewModel
+class ViewModelTargets @Inject constructor(
     private val targetDao: TargetDao,
     private val preferencesManager: PreferencesManager,
     private val alarmBuilder: AlarmBuilder,
-    @Assisted private val state: SavedStateHandle
+    private val state: SavedStateHandle
 ) : ViewModel() {
 
     val searchQueryFlow = state.getLiveData<String>("searchQuery", "")
